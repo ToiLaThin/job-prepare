@@ -1,0 +1,3 @@
+#all bin or Bin & obj or Obj folders will be ignored by git
+[Bb]in/
+[Oo]bj/
