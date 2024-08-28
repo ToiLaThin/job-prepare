@@ -1,5 +1,5 @@
-using DSA.Sort.SortAlgorithms.Abstraction;
 namespace DSA.Sort.SortAlgorithms {
+    using Abstraction;
     public class SelectionSortStrategy: ISortStrategy {
         public void Sort(int[] array) {
             for (int i=0;i < array.Length-1;i++) {
@@ -12,6 +12,5 @@ namespace DSA.Sort.SortAlgorithms {
                 }
             }
         }
-
     }
 }
