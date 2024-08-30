@@ -17,34 +17,43 @@
 public class Program {
     public static int minSubArrLen(int[] nums, int target) {
         int left = 0;
-        int right = 0;
+        int right = -1;
         int sum = 0;
         int minLen = int.MaxValue;
 
         while (left < nums.Length) {
+            right += 1;
             while (sum < target && right < nums.Length) {
                 sum += nums[right];
-                if (right == nums.Length - 1) {
-                    //avoid index out of range
+                if (right == nums.Length - 1) {                    
+                    break; //avoid index out of range
+                }
+                if (sum >= target) {
+                    minLen = Math.Min(minLen, right - left + 1);
                     break;
                 }
                 right += 1;
             }
 
-            minLen = Math.Min(minLen, right - left + 1);
-            if (sum < target && minLen == int.MaxValue) {
+            if (sum < target && minLen == int.MaxValue && right == nums.Length - 1) {
                 return 0;
             }
+
             while (sum >= target && left <= right) {
+                System.Console.WriteLine($"left: {left}, right: {right}, sum: {sum}");
                 minLen = Math.Min(minLen, right -  left + 1);
+                System.Console.WriteLine($"minLen: {minLen}");
                 sum -= nums[left];
                 left += 1;
                 if (left == nums.Length) {
                     break;
                 }
             }
-        }
 
+            if (sum < target && right == nums.Length - 1) {
+                break;
+            }
+        }
         return minLen == int.MaxValue ? 0 : minLen;
     }
     public static void Main() {
