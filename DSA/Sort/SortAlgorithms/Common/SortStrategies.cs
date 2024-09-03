@@ -163,6 +163,42 @@ namespace DSA.Sort.SortAlgorithms {
         }
     }
 
+    public class SelectionSortStrategyDecoratedStopwatch: SelectionSortStrategy
+    {
+        public SelectionSortStrategyDecoratedStopwatch() {}
+
+        public override void Sort(int[] array) {
+            Stopwatch sw = Stopwatch.StartNew();
+            base.Sort();
+            sw.Stop();
+            Console.Out.WriteLine(sw.ElapsedMilliseconds);
+        }
+    }
+
+    public class BubbleSortStrategyDecoratedStopwatch: BubbleSortStrategy
+    {
+        public BubbleSortStrategyDecoratedStopwatch() {}
+
+        public override void Sort(int[] array) {
+            Stopwatch sw = Stopwatch.StartNew();
+            base.Sort();
+            sw.Stop();
+            Console.Out.WriteLine(sw.ElapsedMilliseconds);
+        }
+    }
+
+    public class InsertionSortStrategyDecoratedStopwatch: InsertionSortStrategy
+    {
+        public InsertionSortStrategyDecoratedStopwatch() {}
+
+        public override void Sort(int[] array) {
+            Stopwatch sw = Stopwatch.StartNew();
+            base.Sort();
+            sw.Stop();
+            Console.Out.WriteLine(sw.ElapsedMilliseconds);
+        }
+    }
+
     public class QuickSortStrategyDecoratedStopwatch: QuickSortStrategy
     {
         public QuickSortStrategyDecoratedStopwatch() { }
@@ -171,6 +207,18 @@ namespace DSA.Sort.SortAlgorithms {
         {
             Stopwatch sw = Stopwatch.StartNew();
             base.Sort(array);
+            sw.Stop();
+            Console.Out.WriteLine(sw.ElapsedMilliseconds);
+        }
+    }
+
+    public class MergeSortStrategyDecoratedStopwatch: MergeSortStrategy
+    {
+        public MergeSortStrategyDecoratedStopwatch() {}
+
+        public override void Sort(int[] array) {
+            Stopwatch sw = Stopwatch.StartNew();
+            base.Sort();
             sw.Stop();
             Console.Out.WriteLine(sw.ElapsedMilliseconds);
         }
