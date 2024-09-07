@@ -24,11 +24,16 @@ public class Program {
             return false;
         }
 
+        if (p.value != q.value) {
+            return false;
+        }
+
         return isSameTreeDFS(p.right, q.right) && isSameTreeDFS(p.left, q.left);
     }
 
-    public static bool isSubTree(TreeNode root, TreeNode subRoot) {
-        //find the node in root with same value as subRoot
+    public static bool isSubTreeFindSubRoot(TreeNode root, TreeNode subRoot) {
+        //find the node in root with same value as subRoot, this return wrong if in root tree, we have multiple
+        // node with subRoot value
         if (root == null) {
             return false;
         }
@@ -72,18 +77,38 @@ public class Program {
         }
 
         if (root == null && subRoot == null) {
-            return false;
+            return true; //not should be true
         }
 
         //root is not null but subRoot is null, return false
         if (subRoot == null) {
-            return false;
+            return true;
         }
 
+        // this is wrong , replace with isSameTree function
         if (root.value == subRoot.value && isSubTreeDFS(root.left, subRoot.left) && isSubTreeDFS(root.right, subRoot.right)) {
             return true;
         };
         return isSubTreeDFS(root.right, subRoot) || isSubTreeDFS(root.left, subRoot);
+    }
+
+
+    //time complexity: O(S * T) s: number of node in subTree S, t is number of nodes in subtree T
+    public static bool isSubTreeDFSRightAnswer(TreeNode root, TreeNode subRoot) {
+        if (subRoot == null) {
+            return true;
+        }
+
+        if (root == null) { //subRoot is not null for sure cause it passed the first check
+            return false;
+        }
+
+        if (isSameTreeDFS(root, subRoot)) {
+            return true;
+        }
+
+        //else
+        return isSameTreeDFS(root.left, subRoot) || isSameTreeDFS(root.right, subRoot);
     }
     public static void Main(string[] args) {
         // TreeNode root = new TreeNode(3);
@@ -117,6 +142,6 @@ public class Program {
         subRoot.left = new TreeNode(1);
         subRoot.right = new TreeNode(2);
 
-        System.Console.WriteLine(isSubTreeDFS(root, subRoot));
+        System.Console.WriteLine(isSubTreeDFS(root, subRoot)); 
     }
 }
