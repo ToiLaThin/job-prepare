@@ -52,6 +52,35 @@ public class Program {
         rightViewDFS(root.left, ref currMaxDepth, currDepth + 1);
     }
 
+    //this keep track the node count of each level
+    public static void rightViewBFS(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        Queue<TreeNode> queue = new Queue<TreeNode>();
+        queue.Enqueue(root);
+        while (queue.Count > 0) {
+            int currLevelNodes = queue.Count;
+            //traverse through all the nodes of current level
+            TreeNode currNode = null;
+            for (int i = 0; i< currLevelNodes; i++) {
+                currNode = queue.Dequeue();
+                
+                if (currNode.left != null) {
+                    queue.Enqueue(currNode.left);
+                }
+
+                if (currNode.right != null) {
+                    queue.Enqueue(currNode.right);
+                }
+
+                System.Console.Write(currNode.val + " ");
+            }
+            // print(currNode.val + " "); //end of the loop currNode is rightMost node of this level
+            System.Console.WriteLine();
+        }
+    }
+
     public static void Main(string[] args) {
         // TreeNode root = new TreeNode(1);
         // root.left = new TreeNode(2);
@@ -76,5 +105,7 @@ public class Program {
         int initMaxDepth = 0;
         rightViewDFS(root,ref initMaxDepth, 1);
         System.Console.WriteLine();
+
+        rightViewBFS(root);
     }
 }

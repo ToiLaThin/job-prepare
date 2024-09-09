@@ -15,7 +15,7 @@ public class Program {
         } 
     }
 
-    public static void bottomView(TreeNode root) {
+    public static void bottomViewBFS(TreeNode root) {
         if (root == null) {
             return;
         }
@@ -53,6 +53,29 @@ public class Program {
         }
     }
 
+    public static void bottomViewDFS(TreeNode root, int horizontalDistance, int currHeight, SortedDictionary<int, ValueTuple<int, int>> dict) {
+        if (root == null) {
+            return;
+        }
+
+        if (dict.ContainsKey(horizontalDistance) == false) {
+            dict.Add(horizontalDistance, (root.val, currHeight));
+        }
+        else {
+            var oldTuple = dict[horizontalDistance];
+            int oldNodeVal = oldTuple.Item1;
+            int oldNodeHeight = oldTuple.Item2;
+
+            if (oldNodeHeight > currHeight) {
+                dict[horizontalDistance] = oldTuple;
+            }
+            dict[horizontalDistance] = (root.val, currHeight);
+        }
+
+        bottomViewDFS(root.left, horizontalDistance - 1, currHeight + 1, dict);
+        bottomViewDFS(root.right, horizontalDistance + 1, currHeight + 1, dict);
+    }
+
     public static void Main(string[] args) {
         TreeNode root = new TreeNode(1);
         root.right = new TreeNode(3);
@@ -67,6 +90,14 @@ public class Program {
     // /  \    / \
     //4    5  6   7
 
-        bottomView(root);
+        bottomViewBFS(root);
+
+        System.Console.WriteLine();
+        SortedDictionary<int, ValueTuple<int, int>> dict = new SortedDictionary<int, ValueTuple<int, int>>();
+        bottomViewDFS(root, 0, 0, dict);
+        var dictNodeValues = dict.Values.Select(tuple => tuple.Item1);
+        foreach (var nodeVal in dictNodeValues) {
+            System.Console.WriteLine(nodeVal);
+        }
     }
 }
