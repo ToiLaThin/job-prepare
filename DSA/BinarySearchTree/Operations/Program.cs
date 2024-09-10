@@ -83,6 +83,56 @@ public class Program {
 
         return SearchBSTRecursively(root.left, key);
     }
+
+    //https://www.geeksforgeeks.org/deletion-in-binary-search-tree/
+    public static TreeNode DeleteDFS(TreeNode root, int key) {
+        if (root == null) {
+            return null;
+        }
+
+        //root is node to deleted
+        if (root.val == key) {
+            if (root.left == null & root.right == null) {
+                return null; //root is leaf node, set it to null
+            }
+            if (root.left == null) {
+                return root.right; //root is replaced by its right child
+            }
+
+            if (root.right == null) {
+                return root.left; //root is replaced by its left child
+            }
+            //not need to recurse DeleteDFS for new key
+            Tuple<TreeNode, TreeNode> tuple = GetRightSuccessorAndItsParent(root);
+            TreeNode successor = tuple.Item1;
+            TreeNode successorParent = tuple.Item2;
+            root.val = successor.val;
+            successorParent.left = null; //successor is left child of successorParent on the right subtree of root
+        }
+
+        //node to delete in left => recursive in left
+        if (key < root.val) {
+            root.left = DeleteDFS(root.left, key);
+        }
+        //node to delete in right => recursive in right
+        if (key > root.val) {
+            root.right = DeleteDFS(root.right, key);
+        }
+        //if the root is not the node to be deleted, then must return itself for previous DeleteDFS call in recursion
+        return root;
+
+    }
+
+    //get the leftmost leaf node on the right subtree of root (node smallest in right subtree but larger than all node in leftsubtree of current root)
+    private static Tuple<TreeNode, TreeNode> GetRightSuccessorAndItsParent(TreeNode root) {
+        TreeNode temp = root.right;
+        TreeNode previous = root;
+        while (temp.left != null) {
+            previous = temp;
+            temp = temp.left;
+        }
+        return Tuple.Create(temp, previous);
+    }
     public static void InOrder(TreeNode root) {
         if (root == null) {
             return;
@@ -107,5 +157,9 @@ public class Program {
         else {
             System.Console.WriteLine(find.val);
         }
+
+        DeleteDFS(root, 3);
+        InOrder(root);
+
     }
 }
