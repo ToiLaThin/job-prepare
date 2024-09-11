@@ -12,6 +12,8 @@
 }
 public class Solution
 {
+    //Time: O(n) n is number of nodes in tree
+    //Space: O(m) m is max number of node in a level
     public static List<int> rightSideView(TreeNode root)
     {
         List<int> result = new List<int>();
@@ -19,21 +21,24 @@ public class Solution
             return result;
         }
 
-        Queue<TreeNode> nodesWillView = new Queue<TreeNode>();
-        nodesWillView.Enqueue(root);
-        while (nodesWillView.Count > 0) {
-            TreeNode viewNode = nodesWillView.Dequeue();
-            result.Add(viewNode.val);
-            if (viewNode.left == null && viewNode.right == null) {
-                continue;
+        Queue<TreeNode> queue = new Queue<TreeNode>();
+        queue.Enqueue(root);
+        while (queue.Count > 0) {
+            int nodesInLevelCount = queue.Count;
+            TreeNode node = null;
+            for (int i = 0; i < nodesInLevelCount; i++) {
+                node = queue.Dequeue();
+
+                if (node.left != null) {
+                    queue.Enqueue(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.Enqueue(node.right);
+                }
             }
 
-            if (viewNode.right == null) {
-                nodesWillView.Enqueue(viewNode.left);
-                continue;
-            }
-
-            nodesWillView.Enqueue(viewNode.right);
+            result.Add(node.val); //add last node each level
         }
         return result;
     }
