@@ -27,7 +27,8 @@ public class Program {
                     root.left = BuildTree(preorder, inorder, preIndex + 1, inStart, i - 1);
                 }
                 if (i < inEnd) {
-                    root.right = BuildTree(preorder, inorder, preIndex + i - inStart + 1, i + 1, inEnd);
+                    //skip elements in left subtree
+                    root.right = BuildTree(preorder, inorder, preIndex + (i - inStart) + 1, i + 1, inEnd);
                 }
                 else {
                     //if instart == inend, it means the root is leaf node
