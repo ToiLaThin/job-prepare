@@ -24,7 +24,8 @@
             //SortEngineStrategy.Sort(array, new BubbleSortStrategy());
             //SortEngineStrategy.Sort(array, new InsertionSortStrategy());
             //SortEngineStrategy.Sort(array, new MergeSortStrategy());
-            SortEngineStrategy.Sort(array, new QuickSortStrategy());
+            //SortEngineStrategy.Sort(array, new QuickSortStrategy());
+            SortEngineStrategy.Sort(array, new HeapSortStrategy());
         }
 
         static void Main(string[] args)
