@@ -5,7 +5,7 @@ namespace DSA.Sort.SortAlgorithms {
     using System.Xml;
 
     public class SelectionSortStrategy: ISortStrategy {
-        public void Sort(int[] array) {
+        public virtual void Sort(int[] array) {
             for (int i=0;i < array.Length-1;i++) {
                 for (int j=i+1; j < array.Length; j++) {
                     if (array[i] > array[j]) {
@@ -20,7 +20,7 @@ namespace DSA.Sort.SortAlgorithms {
 
     public class BubbleSortStrategy : ISortStrategy
     {
-        public void Sort(int[] array)
+        public virtual void Sort(int[] array)
         {
             for (int time = 1; time < array.Length; time++)
             {
@@ -39,7 +39,7 @@ namespace DSA.Sort.SortAlgorithms {
 
     public class InsertionSortStrategy : ISortStrategy
     {
-        public void Sort(int[] array)
+        public virtual void Sort(int[] array)
         {
             for (int i = 0; i < array.Length; i++)
             {
@@ -117,7 +117,7 @@ namespace DSA.Sort.SortAlgorithms {
             Merge(array, left, mid, right);
         }
 
-        public void Sort(int[] array)
+        public virtual void Sort(int[] array)
         {
             DivideAndMergeRecursion(array, 0, array.Length - 1);
         }
@@ -169,7 +169,7 @@ namespace DSA.Sort.SortAlgorithms {
 
         public override void Sort(int[] array) {
             Stopwatch sw = Stopwatch.StartNew();
-            base.Sort();
+            base.Sort(array);
             sw.Stop();
             Console.Out.WriteLine(sw.ElapsedMilliseconds);
         }
@@ -181,7 +181,7 @@ namespace DSA.Sort.SortAlgorithms {
 
         public override void Sort(int[] array) {
             Stopwatch sw = Stopwatch.StartNew();
-            base.Sort();
+            base.Sort(array);
             sw.Stop();
             Console.Out.WriteLine(sw.ElapsedMilliseconds);
         }
@@ -193,7 +193,7 @@ namespace DSA.Sort.SortAlgorithms {
 
         public override void Sort(int[] array) {
             Stopwatch sw = Stopwatch.StartNew();
-            base.Sort();
+            base.Sort(array);
             sw.Stop();
             Console.Out.WriteLine(sw.ElapsedMilliseconds);
         }
@@ -218,9 +218,95 @@ namespace DSA.Sort.SortAlgorithms {
 
         public override void Sort(int[] array) {
             Stopwatch sw = Stopwatch.StartNew();
-            base.Sort();
+            base.Sort(array);
             sw.Stop();
             Console.Out.WriteLine(sw.ElapsedMilliseconds);
+        }
+    }
+
+    public class HeapSortStrategy: ISortStrategy {
+        public HeapSortStrategy() {}
+
+        private int parentIdx(int currIdx)
+        {
+            return (currIdx - 1) / 2;
+        }
+
+        private int rChildIdx(int currIdx)
+        {
+            return 2 * currIdx + 2;
+        }
+        private int lChildIdx(int currIdx)
+        {
+            return 2 * currIdx + 1;
+        }
+
+        private void swapValue(int i, int j, int[] heap)
+        {
+            int temp = heap[i];
+            heap[i] = heap[j];
+            heap[j] = temp;
+        }
+
+        private void buildMaxHeap(int[] unSortArr)
+        {
+            //for (int i = 0; i < unSortArr.Length; i++) {
+            //    maxHeapifyUp(i, unSortArr);
+            //}
+
+            for (int i = unSortArr.Length - 1; i >= 0; i--) {
+                maxHeapifyDown(i, unSortArr, unSortArr.Length);
+            }
+        }
+
+        private void maxHeapifyUp(int currIdx, int[] heap)
+        {
+            while (currIdx > 0 && heap[currIdx] > heap[parentIdx(currIdx)])
+            {
+                swapValue(currIdx, parentIdx(currIdx), heap);
+                currIdx = parentIdx(currIdx);
+            }
+        }
+
+        private void maxHeapifyDown(int currIdx, int[] heap, int heapSize)
+        {
+            //heapSize to limit the partition we heapify
+            while (true)
+            {
+                int lIdx = lChildIdx(currIdx);
+                int rIdx = rChildIdx(currIdx);
+                int maxIdx = currIdx;
+
+                while (lIdx < heapSize && heap[lIdx] > heap[maxIdx]) {
+                    maxIdx = lIdx;
+                }
+                while (rIdx < heapSize && heap[rIdx] > heap[maxIdx]) {
+                    maxIdx = rIdx;
+                }
+
+                if (maxIdx == currIdx)
+                {
+                    return;
+                }
+
+                swapValue(currIdx, maxIdx, heap);
+                currIdx = maxIdx;
+            }
+        }
+
+        //time: O(2nlogn)
+        public void Sort(int[] array) {
+            buildMaxHeap(array);
+            int heapSize = array.Length;
+            while (true)
+            {
+                if (heapSize <= 0) {
+                    break;
+                }
+                swapValue(0, heapSize - 1, array);
+                heapSize -= 1;
+                maxHeapifyDown(0, array, heapSize);
+            }
         }
     }
 }
