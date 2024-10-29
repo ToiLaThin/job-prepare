@@ -29,16 +29,32 @@ public class Program {
         }
         return -1;
     }
+
+    public static int searchPattern2(int[] arr, int[] pattern) {
+        for (int i = 0; i <= arr.Length - pattern.Length; i++) {
+            bool patternFound = true;
+            for (int j = 0; j < pattern.Length; j++) {
+                if (arr[i + j] != pattern[j]) {
+                    patternFound = false;
+                    break;
+                }
+            }
+            if (patternFound) {
+                return i;
+            }
+        }
+        return -1;
+    }
     public static void Main(string[] args) {
-        // int[] arr = { 9, 3, 5, 3, 5, 7, 2, 2 };
+        int[] arr = { 9, 3, 5, 3, 5, 7, 2, 2 };
         // int[] arr = { 3, 5, 7, 3, 5, 7 };
         // int[] arr = { 3, 5, 6, 7, 8, 3, 5 };
-        // int[] pattern = { 3, 5, 7};
+        int[] pattern = { 3, 5, 7};
 
 
-        int[] arr = { 3, 5, 7, 7, 3, 5, 7, 8 };
-        int[] pattern = { 7, 8 };
-        int result = searchPattern(arr, pattern);
+        // int[] arr = { 3, 5, 7, 7, 3, 5, 7, 8 };
+        // int[] pattern = { 7, 8 };
+        int result = searchPattern2(arr, pattern);
         Console.WriteLine(result);
     }
 }
